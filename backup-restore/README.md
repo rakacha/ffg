@@ -5,7 +5,7 @@
 Step 1: Uses the existing Erpnext backend service to execute the backup job using. This will be configured in crontab - 
 
 ```bash
-docker compose --project-name lifi-erpnext-runner exec backend bench --site lifi.erpnext backup --with-files
+0 2 * * * docker compose --project-name lifi-erpnext-runner exec backend bench --site lifi.erpnext backup --with-files
 ```
 
 Step 2: The ```docker-compose-backup.yml``` contains the entire configuration. It uses the ```lifi-backup-app:1.0.0``` to push the backup files in Google Drive of info@learninginitiativesofindia.com account.
