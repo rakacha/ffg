@@ -67,4 +67,4 @@ container_backup_path=/home/frappe/frappe-bench/sites/$site_name/private/backups
 docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path
 
 echo "Executing the bench restore command"
-docker exec $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/$file_name_prefix-files.tar --with-private-files  $container_backup_path/$file_name_prefix-private-files.tar $container_backup_path/$file_name_prefix-database.sql.gz
+docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/$file_name_prefix-files.tar --with-private-files  $container_backup_path/$file_name_prefix-private-files.tar $container_backup_path/$file_name_prefix-database.sql.gz
