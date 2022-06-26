@@ -32,6 +32,12 @@ if [ -z "$project_name" ]
   exit
 fi
 
+if [ -z "$file_loc" ]
+ then
+  echo Gdrive file location cannot be empty. For ex, -l location
+  exit
+fi
+
 if [ -z "$file_name_prefix" ]
  then
   echo Restoring File Name Prefix cannot be empty. For ex, -r prefix
