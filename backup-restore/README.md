@@ -18,10 +18,18 @@ Step 3: Finally add the docker compose job in crontab to run in a specific scehd
 0 2 * * * docker compose -f /home/azureuser/LIFI/backups/docker-compose-backup.yml up -d > /dev/null
 ```
 
-Optionally the ```lifi.eprnext.backup.sh``` script can be run for adhoc backups and copying the backup folder from the container to local host dir. The command to run the script -
+Optional-1: the ```lifi.eprnext.backup.local.sh``` script can be run for adhoc backups and copying the backup folder from the container to local host dir. The command to run the script -
 
 ```bash
- sh lifi.eprnext.backup.sh <docker_compose_project_name> <site_name>
+ sh lifi.eprnext.backup.sh -p <docker_compose_project_name> -s <site1_name>, <site2_name>
+
+ sh /home/azureuser/LIFI/backups/lifi.eprnext.backup.sh lifi-erpnext-runner uat.lifi.erpnext
+```
+
+Optional-2: the ```docker-compose-backup-template.yml``` script can be run for adhoc backups and copying the backup folder from the container to local host dir. The command to run the script -
+
+```bash
+ sh lifi.eprnext.backup.sh -p <docker_compose_project_name> -s <site1_name>, <site2_name>
 
  sh /home/azureuser/LIFI/backups/lifi.eprnext.backup.sh lifi-erpnext-runner uat.lifi.erpnext
 ```
