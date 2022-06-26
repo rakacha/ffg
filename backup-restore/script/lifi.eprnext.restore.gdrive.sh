@@ -56,12 +56,15 @@ docker run --name lifi-restore-job1  -e RESTORE_FILE_PREFIX=$file_name_prefix -e
 rm -r temp_drive_bcup
 mkdir temp_drive_bcup
 
-echo "Copying files from :" $site_name
+echo "Copying files from restore container"
+docker cp lifi-restore-job1:/app/temp_drive_bcup/. temp_drive_bcup
 
-container_backup_path=/home/frappe/frappe-bench/sites/$site_name/private/backups
-
-docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path
-
+echo "Removing container"
 docker container rm lifi-restore-job1
 
+echo "Copying to erpnext worker container"
+container_backup_path=/home/frappe/frappe-bench/sites/$site_name/private/backups
+docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path
+
+echo "Executing the bench restore command"
 docker exec $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/$file_name_prefix-files.tar --with-private-files  $container_backup_path/$file_name_prefix-private-files.tar $container_backup_path/$file_name_prefix-database.sql.gz
