@@ -57,7 +57,7 @@ rm -r temp_drive_bcup
 mkdir temp_drive_bcup
 
 echo "Copying files from restore container"
-docker cp lifi-restore-job1:/app/temp_drive_bcup/. temp_drive_bcup
+docker cp lifi-restore-job1:/app/temp/. temp_drive_bcup
 
 echo "Removing container"
 docker container rm lifi-restore-job1
