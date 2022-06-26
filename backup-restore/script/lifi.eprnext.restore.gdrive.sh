@@ -2,11 +2,12 @@
 
 echo Running the restore job
 
-while getopts s:p:r:d: flag
+while getopts s:p:l:r:d: flag
 do
     case "${flag}" in
         s) site_name=${OPTARG};;
         p) project_name=${OPTARG};;
+		l) file_loc=${OPTARG};;
 		r) file_name_prefix=${OPTARG};;
 		d) db_pass=${OPTARG};;
      esac
@@ -14,6 +15,7 @@ done
 
 echo "Site Name:"  $site_name
 echo "Project Name" $project_name
+echo "File Location in GDrive" $file_loc
 echo "File Name Prefix" $file_name_prefix
 
 
@@ -43,7 +45,7 @@ if [ -z "$db_pass" ]
 fi
 
 echo "Restoring site:" $site_name
-docker run --name lifi-restore-job1  -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$site_name.backup --network frappe_docker_default rakacha/lifi-restore-job:1.0.0
+docker run --name lifi-restore-job1  -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-restore-job:1.0.0
 
 rm -r temp_drive_bcup
 mkdir temp_drive_bcup
