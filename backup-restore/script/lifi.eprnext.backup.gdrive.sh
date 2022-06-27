@@ -33,12 +33,15 @@ for site_name in $site_arr
  do
   echo "Processing site:" $site_name
   docker exec $project_name-backend-1 bench --site $site_name backup --with-files
+  
+  echo "Backup run, now processing to upload in Google Drive"
   export BACKUP_SITE_NAME=$site_name
   export BACKUP_GDRIVE_PATH=$site_name.backup
-  envsubst '${BACKUP_SITE_NAME},${BACKUP_GDRIVE_PATH}' < $WORKING_DIR/ffg/backup-restore/docker-compose-backup-template.yml > $WORKING_DIR/ffg/backup-restore/docker-compose-backup.yml
-  docker compose -f $WORKING_DIR/ffg/backup-restore/docker-compose-backup.yml up
+  envsubst '${BACKUP_SITE_NAME},${BACKUP_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
+  docker compose -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
   unset BACKUP_SITE_NAME
   unset BACKUP_GDRIVE_PATH
+  
  done
 
 
