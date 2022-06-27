@@ -1,18 +1,18 @@
 services:
   reverseproxy-uat:
-    image: rakacha/erpnext-rev-proxy:1.0.0
+    image: rakacha/erpnext-rev-proxy:2.0.0
     environment:
      SITE_NAME: uat.lifi.erpnext
-     HOST_NAME: 20.247.96.26
+     HOST_NAME: uat.lifi.erpnext
      LISTEN_PORT: 8081
     ports: 
      - 8081:8081
     restart: always
   reverseproxy:
-    image: rakacha/erpnext-rev-proxy:1.0.0
+    image: rakacha/erpnext-rev-proxy:2.0.0
     environment:
      SITE_NAME: lifi.erpnext
-     HOST_NAME: 20.247.96.26
+     HOST_NAME: lifi.erpnext
      LISTEN_PORT: 80
     ports:
      - 80:80
