@@ -1,19 +1,17 @@
 # Erpnext Backup and Google Drive Push Job
 
+## Backup and push to Google Drive
 
+Step 1: Go to the /backup-restore/scripts dir
 
-Step 1: Uses the existing Erpnext backend service to execute the backup job using. The script ```lifi.eprnext.backup.gdrive.sh``` is written to take to run the backup and push the backups in Google drive.
+Step 2: Run the backup script to take the back up and push to google drive. The Google Drive is configured for [info@learninginitiativesofindia.com](info@learninginitiativesofindia.com). The script supports multiple site backups.
 
 ```bash
 sh lifi.eprnext.backup.gdrive.sh -s <site2>,<site1> -p <project_name>
 Example:
 sh lifi.eprnext.backup.gdrive.sh -s sit.lifi,uat.lifi -p lifi-central
 ```
-The ```docker-compose-backup-template.yml``` contains the entire configuration. It uses the ```lifi-backup-app``` to push the backup files in Google Drive of info@learninginitiativesofindia.com account.
-
-The Dockerfile is used to build the ```lifi-backup-app``` container. This spins up python container and pushes the changes to Google Drive. This can be done for multiple sites where multiple container is executed for that.
-
-Step 2: Finally add the docker compose job in crontab to run in a specific scehdule. For ex - 
+Step 3: Finally add the docker compose job in crontab to run in a specific scehdule. For ex - 
 
 ```bash
 0 2 * * * sh lifi.eprnext.backup.gdrive.sh -s sit.lifi,uat.lifi -p lifi-central > /dev/null
@@ -36,3 +34,19 @@ docker compose --env-file <env_file_name> -f <docker-compose_file_name> up
 Example:
 docker compose --env-file backup-config.env -f docker-compose-backup-template.yml up
 ```
+
+## Download from Google Drive and restore the site
+
+
+Step 1: Go to the /backup-restore/scripts dir
+
+Step 2: Run the restore script to download the back ups from google drive. The Google Drive is configured for [info@learninginitiativesofindia.com](info@learninginitiativesofindia.com). And then run the bench restore command
+
+```bash
+sh lifi.eprnext.restore.gdrive.sh -p <project_name> -s <site_name> -l <gdrive_backup_folder_location> -r <to_be_restored_file_prefix> -d <db_root_password>
+
+ 
+Example:
+sh lifi.eprnext.restore.gdrive.sh -p lifi-erpnext-runner -s lifi.erpnext -l lifi.erpnext.backup -r 20220625_142927-lifi_erpnext -d password
+```
+
