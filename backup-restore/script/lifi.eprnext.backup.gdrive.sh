@@ -39,7 +39,7 @@ for site_name in $site_arr
   export BACKUP_GDRIVE_PATH=$site_name.backup
   export WORKING_DIR=/home/azureuser/LIFI/devops
   envsubst '${BACKUP_SITE_NAME},${BACKUP_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
-  docker compose -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
+  docker compose --project-name $project_name -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
   unset BACKUP_SITE_NAME
   unset BACKUP_GDRIVE_PATH
   
