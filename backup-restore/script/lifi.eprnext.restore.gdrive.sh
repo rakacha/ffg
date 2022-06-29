@@ -66,8 +66,9 @@ echo "Copying sql dump and files to erpnext worker container"
 container_backup_path=/home/frappe/frappe-bench/sites/$site_name
 docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path/private/backups
 
+echo "Executing the bench restore command"
+docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/$file_name_prefix-files.tar --with-private-files  $container_backup_path/$file_name_prefix-private-files.tar $container_backup_path/$file_name_prefix-database.sql.gz
+
 echo "Copying site config files to erpnext worker container"
 docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path
 
-echo "Executing the bench restore command"
-docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/$file_name_prefix-files.tar --with-private-files  $container_backup_path/$file_name_prefix-private-files.tar $container_backup_path/$file_name_prefix-database.sql.gz
