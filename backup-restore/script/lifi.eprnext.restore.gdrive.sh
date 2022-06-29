@@ -62,13 +62,17 @@ docker cp lifi-restore-job1:/app/temp/. temp_drive_bcup
 echo "Removing container"
 docker container rm lifi-restore-job1
 
+echo "Executing the create new site command"
+docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --db-password 8kItu7JTP6Qkeh2a --admin-password admin --install-app erpnext
+
 echo "Copying sql dump and files to erpnext worker container"
 container_backup_path=/home/frappe/frappe-bench/sites/$site_name
 docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path/private/backups
 
-echo "Executing the bench restore command"
-docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --db-name $site_name.db --db-password 8kItu7JTP6Qkeh2a --admin-password admin --install-app erpnext --with-public-files $container_backup_path/private/backups/$file_name_prefix-files.tar --with-private-files  $container_backup_path/private/backups/$file_name_prefix-private-files.tar $container_backup_path/private/backups/$file_name_prefix-database.sql.gz
 
-echo "Copying site config files to erpnext worker container"
-docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
+echo "Executing the bench restore command"
+docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/private/backups/$file_name_prefix-files.tar --with-private-files  $container_backup_path/private/backups/$file_name_prefix-private-files.tar $container_backup_path/private/backups/$file_name_prefix-database.sql.gz
+
+#echo "Copying site config files to erpnext worker container"
+#docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
 
