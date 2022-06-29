@@ -7,5 +7,13 @@ def authenticate():
 	drive = GoogleDrive(gauth)
 	return drive
 
+def listFiles():
+	fileList = drive.ListFile({'q': "'root' in parents and mimeType='application/vnd.google-apps.folder'and trashed=false" %parent_dir}).GetList()
+	for file in fileList:
+		print('Looking folder title: %s, ID: %s' % (file['title'], file['id']))
 
-authenticate()
+def testAuth():
+	authenticate()
+	listFiles()
+	
+testAuth()
