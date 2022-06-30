@@ -56,8 +56,8 @@ docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLO
 rm -r temp_drive_bcup
 mkdir temp_drive_bcup
 
-echo "Copying files from restore container - lifi-restore-job1"
-docker cp lifi-restore-job1:/app/temp/. temp_drive_bcup
+echo "Copying files from restore container - gdrive-sync-job1"
+docker cp gdrive-sync-job1:/app/temp/. temp_drive_bcup
 
 echo "Removing container"
 docker container rm gdrive-sync-job1
