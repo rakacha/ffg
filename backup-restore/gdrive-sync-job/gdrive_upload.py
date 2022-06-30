@@ -1,11 +1,4 @@
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-
-def authenticate():
-	gauth = GoogleAuth()
-	gauth.CommandLineAuth()
-	drive = GoogleDrive(gauth)
-	return drive
+import gdrive_auth
 
 def findFolderIdByTitle(drive, folderName, parent_dir):
 	fileID = None
@@ -63,11 +56,7 @@ def backup():
 		print('No GDRIVE_DIR environment variable is set.')
 		return
 	
-	drive = authenticate()
+	drive = gdrive_auth.authenticate()
 	folder_id = findFolderIdByTitle(drive, os.environ.get('GDRIVE_DIR'), 'root')
 	backupAllFilesFromBackUpDir(drive, listFile(drive, folder_id), folder_id)
 	
-	
-	
-
-backup()

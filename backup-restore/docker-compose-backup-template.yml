@@ -4,10 +4,12 @@ services:
   upload-site1:
     image: rakacha/lifi-backup-app:2.0.0
     environment:
+      - SYNC_MODE-UPLOAD
       - BACKUP_DIR=/home/frappe/frappe-bench/sites/${BACKUP_SITE_NAME}/private/backups
       - GDRIVE_DIR=${BACKUP_GDRIVE_PATH}
     volumes:
       - "sites-vol:/home/frappe/frappe-bench/sites"
+      - "app-vol:/app"
     networks:
       - erpnext-network
       
@@ -21,3 +23,6 @@ volumes:
   sites-vol:
     external: true
     name: frappe_docker_sites
+  app-vol:
+    external: true
+    name: gdrive-job-vol

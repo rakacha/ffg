@@ -35,6 +35,7 @@ for site_name in $site_arr
   docker exec $project_name-backend-1 bench --site $site_name backup --with-files
   
   echo "Backup run, now processing to upload in Google Drive"
+  export SYNC_MODE=UPLOAD
   export BACKUP_SITE_NAME=$site_name
   export BACKUP_GDRIVE_PATH=$site_name.backup
   export WORKING_DIR=/home/azureuser/LIFI/devops

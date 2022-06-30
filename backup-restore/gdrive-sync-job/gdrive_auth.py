@@ -16,4 +16,4 @@ def testAuth():
 	drive = authenticate()
 	listFiles(drive)
 	
-testAuth()
+

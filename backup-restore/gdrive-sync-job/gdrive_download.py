@@ -1,11 +1,4 @@
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-
-def authenticate():
-	gauth = GoogleAuth()
-	gauth.CommandLineAuth()
-	drive = GoogleDrive(gauth)
-	return drive
+import gdrive_auth
 
 def findFolderIdByTitle(drive, folderName, parent_dir):
 	fileID = None
@@ -51,9 +44,6 @@ def restoreFiles(drive, folder_id, file_prefix):
 			file.GetContentFile(file['title'])
 			shutil.move("./"+database_backup, "./temp/"+database_backup)
 
-
-
-
 	
 def restore():
 	if os.environ.get('RESTORE_FILE_PREFIX') is None:
@@ -65,8 +55,7 @@ def restore():
 		return
 		
 	file_prefix = os.environ.get('RESTORE_FILE_PREFIX')
-	drive = authenticate()
+	drive = gdrive_auth.authenticate()
 	folder_id = findFolderIdByTitle(drive, os.environ.get('RESTORE_PATH'), 'root')
 	restoreFiles(drive, folder_id, file_prefix)
 	
-restore()
