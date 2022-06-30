@@ -63,7 +63,7 @@ echo "Removing container"
 docker container rm gdrive-sync-job1
 
 echo "Executing the create new site: " $site_name
-docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --db-password 8kItu7JTP6Qkeh2a --admin-password admin --install-app erpnext
+docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --admin-password admin --install-app erpnext
 
 echo "Enabling scheduler for site: " $site_name
 docker compose --project-name $project_name exec backend bench --site $site_name enable-scheduler
@@ -76,6 +76,6 @@ docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path/pri
 echo "Executing the bench restore command for site: " $site_name
 docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/private/backups/$file_name_prefix-files.tar --with-private-files  $container_backup_path/private/backups/$file_name_prefix-private-files.tar $container_backup_path/private/backups/$file_name_prefix-database.sql.gz
 
-echo "Copying site config file: " $file_name_prefix-site_config_backup.json " to erpnext worker container"
-docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
+#echo "Copying site config file: " $file_name_prefix-site_config_backup.json " to erpnext worker container"
+#docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
 
