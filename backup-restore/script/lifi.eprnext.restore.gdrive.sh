@@ -78,7 +78,7 @@ docker cp gdrive-sync-job1:/app/temp/. temp_drive_bcup
 if [ -z "$(ls -A temp_drive_bcup)" ]
  then
     echo "Downloaded backups successfully."
- elif
+ else
     echo "There is no backup file with the given file name. Please check if you have entered right file name prefix."
 	exit
 fi
@@ -92,7 +92,7 @@ if [ -z "$lifi_db_pass" ]
  then
   echo "DB password provided  for application schema, creating the site with provided password."
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --db-password $lifi_db_pass --admin-password admin --install-app erpnext --force
- elif
+ else
   echo "DB password not provided  for application schema, creating the site with random password."
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --admin-password admin --install-app erpnext --force
 fi
