@@ -78,6 +78,8 @@ docker cp gdrive-sync-job1:/app/temp/. temp_drive_bcup
 if [ -z "$(ls -A temp_drive_bcup)" ]
  then
     echo "There is no backup file with the given file name. Please check if you have entered right file name prefix."
+	echo "Step 3: Removing gdrive sync job container : "
+	docker container rm gdrive-sync-job1
 	exit
  else
     echo "Downloaded backups successfully."
