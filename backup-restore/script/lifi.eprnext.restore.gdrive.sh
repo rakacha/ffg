@@ -64,11 +64,15 @@ if [ -z "$db_pass" ]
 fi
 
 echo "Restore process started with backups from Gdrive for site:" $site_name 
+echo "******************************************************************************************"
 echo "Step 1: Downloading backups from Gdrive for site:" $site_name "from location: " $file_loc
+echo "******************************************************************************************"
 
 docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLOAD -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-grdrive-sync:1.0.0
 
+echo "******************************************************************************************"
 echo "Step 2: Copying files from gdrive sync job container: gdrive-sync-job1"
+echo "******************************************************************************************"
 
 rm -r temp_drive_bcup
 mkdir temp_drive_bcup
@@ -78,17 +82,23 @@ docker cp gdrive-sync-job1:/app/temp/. temp_drive_bcup
 if [ -z "$(ls -A temp_drive_bcup)" ]
  then
     echo "There is no backup file with the given file name. Please check if you have entered right file name prefix."
+	echo "******************************************************************************************"
 	echo "Step 3: Removing gdrive sync job container : "
 	docker container rm gdrive-sync-job1
+	echo "******************************************************************************************"
 	exit
  else
     echo "Downloaded backups successfully."
 fi
 
+echo "******************************************************************************************"
 echo "Step 3: Removing gdrive sync job container : "
 docker container rm gdrive-sync-job1
+echo "******************************************************************************************"
 
+echo "******************************************************************************************"
 echo "Step 4: Executing the create new site: " $site_name
+echo "******************************************************************************************"
 
 if [ -z "$lifi_db_pass" ]
  then
@@ -99,19 +109,35 @@ if [ -z "$lifi_db_pass" ]
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --db-password $lifi_db_pass --admin-password admin --install-app erpnext --force
 fi
 
+echo "******************************************************************************************"
 echo "Step 5: Enabling scheduler for site: " $site_name
+echo "******************************************************************************************"
+
 docker compose --project-name $project_name exec backend bench --site $site_name enable-scheduler
 
+echo "******************************************************************************************"
 echo "Step 6: Copying sql dump and files to erpnext worker container"
+echo "******************************************************************************************"
+
 container_backup_path=/home/frappe/frappe-bench/sites/$site_name
 docker cp ./temp_drive_bcup/. $project_name-backend-1:$container_backup_path/private/backups
 
-
+echo "******************************************************************************************"
 echo "Step 7: Executing the bench restore command for site: " $site_name
+echo "******************************************************************************************"
+
 docker exec -i $project_name-backend-1 bash bench --site $site_name restore --db-root-password $db_pass --with-public-files $container_backup_path/private/backups/$file_name_prefix-files.tar --with-private-files  $container_backup_path/private/backups/$file_name_prefix-private-files.tar $container_backup_path/private/backups/$file_name_prefix-database.sql.gz
 
 if [ -z "$lifi_db_pass" ]
  then
+	echo "******************************************************************************************"
+	echo "Step 8: Nothing to copy as the site was created newly"
+	echo "******************************************************************************************"
+ else
+	echo "******************************************************************************************"
 	echo "Step 8: Copying site config file: " $file_name_prefix-site_config_backup.json " to erpnext site: " $site_name
+	echo "******************************************************************************************"
 	docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
 fi
+
+echo "Restrore completed for site: " $site_name
