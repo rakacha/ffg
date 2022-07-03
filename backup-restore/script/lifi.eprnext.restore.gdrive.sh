@@ -113,3 +113,4 @@ if [ -z "$lifi_db_pass" ]
  then
 	echo "Step 8: Copying site config file: " $file_name_prefix-site_config_backup.json " to erpnext site: " $site_name
 	docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
+fi
