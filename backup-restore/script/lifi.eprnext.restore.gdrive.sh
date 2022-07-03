@@ -97,15 +97,17 @@ docker container rm gdrive-sync-job1
 echo "******************************************************************************************"
 
 echo "******************************************************************************************"
-echo "Step 4: Executing the create new site: " $site_name
+echo "Step 4: Creating new site: " $site_name
 echo "******************************************************************************************"
 
 if [ -z "$lifi_db_pass" ]
  then
-  echo "DB password not provided  for application schema, creating the site with random password."
+  echo "DB password not provided  for site DB schema, creating the site with random password."
+  docker exec -i $project_name-backend-1 bash bench drop-site $site_name --db-root-password $db_pass
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --admin-password admin --install-app erpnext --force
  else
   echo "DB password provided  for application schema, creating the site with provided password."
+  docker exec -i $project_name-backend-1 bash bench drop-site $site_name --db-root-password $db_pass
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --db-password $lifi_db_pass --admin-password admin --install-app erpnext --force
 fi
 
