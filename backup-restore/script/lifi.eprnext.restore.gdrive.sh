@@ -63,7 +63,7 @@ if [ -z "$db_pass" ]
   exit
 fi
 
-echo "Restore process started with backups from Gdrive for site:" $site_name "
+echo "Restore process started with backups from Gdrive for site:" $site_name 
 echo "Step 1: Downloading backups from Gdrive for site:" $site_name "from location: " $file_loc
 
 docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLOAD -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-grdrive-sync:1.0.0
@@ -96,7 +96,6 @@ if [ -z "$lifi_db_pass" ]
   echo "DB password not provided  for application schema, creating the site with random password."
   docker exec -i $project_name-backend-1 bash bench new-site $site_name --mariadb-root-password $db_pass --db-name $site_name.db --admin-password admin --install-app erpnext --force
 fi
-
 
 echo "Step 5: Enabling scheduler for site: " $site_name
 docker compose --project-name $project_name exec backend bench --site $site_name enable-scheduler
