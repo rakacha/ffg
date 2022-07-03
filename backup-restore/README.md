@@ -42,6 +42,18 @@ Step 1: Go to the /backup-restore/scripts dir
 
 Step 2: Run the restore script to download the back ups from google drive. The Google Drive is configured for [info@learninginitiativesofindia.com](info@learninginitiativesofindia.com). And then run the bench restore command
 
+Restore script help -
+
+```bash
+Site restore command usage:
+-s <site_name>
+-p <project_name>
+-l <restore_dir_location_in google_drive>
+-f <file_name_prefix to download from google drive dir>
+-r <root password of Mysql DB>
+-d <optinal parameter: pass the application schema password. If not provided a random password will be generated.>
+```
+
 ```bash
 sh lifi.eprnext.restore.gdrive.sh -p <project_name> -s <site_name> -l <gdrive_backup_folder_location> -f <to_be_restored_file_prefix> -r <db_root_password> -d <app_db_password>
 
@@ -62,10 +74,16 @@ The upload to google drive script can be run after setting up 3 environment vari
   export BACKUP_GDRIVE_PATH=$site_name.backup
 ```
 
-The download from Google drive can be run after setting up 4 environment variables -
+The download from Google drive can be run after setting up 3 environment variables -
 
 ```bash
 SYNC_MODE=DOWNLOAD
 RESTORE_FILE_PREFIX=$file_name_prefix
 RESTORE_PATH=$file_loc
 ```
+
+Run the python script -
+
+```bash
+python3 gdrive_sync.py
+``` 
