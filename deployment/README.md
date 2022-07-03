@@ -7,7 +7,7 @@ The ```docker-compose.yml``` contains the entire configuration clubbed together 
 Post checkout, run the following command -
 
 ```bash
-docker compose -f <path_to_docker_compose_file> --project-name <project_name> up -d
+docker compose -f <path_to_docker_compose_file> --env-file <env_file_name> --project-name <project_name> up -d
 ```
 
 This command shall spin up the Erpnext application with the database installed as mariadb.
