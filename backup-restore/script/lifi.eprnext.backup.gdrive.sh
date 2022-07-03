@@ -32,10 +32,14 @@ for site_name in $site_arr
 
  do
   echo "Backup process started for site:" $site_name
+  echo "******************************************************************************************"
   echo "Step 1: Running backup command for site: " $site_name
+  echo "******************************************************************************************"
   docker exec $project_name-backend-1 bench --site $site_name backup --with-files
   
+  echo "******************************************************************************************"
   echo "Step 2: Backup run successfully, now processing to upload in Google Drive"
+  echo "******************************************************************************************"
   
   export SYNC_MODE=UPLOAD
   export BACKUP_SITE_NAME=$site_name
