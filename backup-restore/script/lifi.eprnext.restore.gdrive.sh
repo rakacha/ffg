@@ -2,7 +2,7 @@
 
 if [ "$1" = "-h" ] 
  then
-  echo "Usage:]"
+  echo "Site restore command usage:"
   echo "-s <site_name>"
   echo "-p <project_name>"
   echo "-l <restore_dir_location_in google_drive>"
