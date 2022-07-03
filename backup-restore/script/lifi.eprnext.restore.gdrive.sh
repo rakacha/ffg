@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [ "$1" == "-h" ]; then
+if [ "$1" = "-h" ] 
+ then
   echo "Usage:]"
   echo "-s <site_name>"
   echo "-p <project_name>"
