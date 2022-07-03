@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [ "$1" == "-h" ]; then
+  echo "Usage:]"
+  echo "-s <site_name>"
+  echo "-p <project_name>"
+  echo "-l <restore_dir_location_in google_drive>"
+  echo "-f <file_name_prefix to download from google drive dir>"
+  echo "-r <root password of Mysql DB>"
+  echo "-d <optinal parameter: pass the application schema password. If not provided a random password will be generated.>"
+  exit 0
+fi
+
 echo Running the restore job
 
 while getopts s:p:l:f:r:d: flag
