@@ -44,7 +44,7 @@ for site_name in $site_arr
   export GDRIVE_SYNC_MODE=UPLOAD
   export BACKUP_SITE_NAME=$site_name
   export BACKUP_GDRIVE_PATH=$site_name.backup
-  export WORKING_DIR=/home/foce/lifi/temp
+  export WORKING_DIR=/home/azureuser/LIFI/devops
   
   envsubst '${GDRIVE_SYNC_MODE}, ${BACKUP_SITE_NAME},${BACKUP_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
   
