@@ -69,8 +69,8 @@ echo "Step 1: Downloading backups from Gdrive for site:" $site_name "from locati
 echo "******************************************************************************************"
 
 export GDRIVE_SYNC_MODE=DOWNLOAD
-export RESTORE_FILE_PREFIX=$file_name_prefix
-export RESTORE_PATH=$file_loc
+export GDRIVE_FILE_PREFIX=$file_name_prefix
+export RESTORE_GDRIVE_PATH=$file_loc
 export WORKING_DIR=/home/force/lifi/temp
   
 envsubst '${GDRIVE_SYNC_MODE},${GDRIVE_FILE_PREFIX},${RESTORE_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
