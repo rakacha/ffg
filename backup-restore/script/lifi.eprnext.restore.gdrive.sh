@@ -139,7 +139,7 @@ if [ -z "$lifi_db_pass" ]
 	echo "******************************************************************************************"
 	echo "Step 8: Copying site config file: " $file_name_prefix-site_config_backup.json " to erpnext site: " $site_name
 	echo "******************************************************************************************"
-	docker cp ./temp_drive_bcup/$file_name_prefix-site_config_backup.json $project_name-backend-1:$container_backup_path/site_config.json
+	docker exec -i  $project_name-backend-1 cp /home/frappe/frappe-bench/sites/$site_name/private/backups/$file_name_prefix-site_config_backup.json /home/frappe/frappe-bench/sites/$site_name/site_config.json
 fi
 
-echo "Restrore completed for site: " $site_name
+echo "Restore completed for site: " $site_name

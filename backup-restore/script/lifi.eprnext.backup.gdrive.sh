@@ -52,6 +52,7 @@ for site_name in $site_arr
   
   unset BACKUP_SITE_NAME
   unset BACKUP_GDRIVE_PATH
+  unset SYNC_MODE
   
   echo "Backup prcoess completed for site: " $site_name
  done
