@@ -68,7 +68,16 @@ echo "**************************************************************************
 echo "Step 1: Downloading backups from Gdrive for site:" $site_name "from location: " $file_loc
 echo "******************************************************************************************"
 
-docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLOAD -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-grdrive-sync:1.0.0
+export GDRIVE_SYNC_MODE=DOWNLOAD
+export RESTORE_FILE_PREFIX=$file_name_prefix
+export RESTORE_PATH=$file_loc
+export WORKING_DIR=/home/force/lifi/temp
+  
+envsubst '${GDRIVE_SYNC_MODE},${GDRIVE_FILE_PREFIX},${RESTORE_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
+  
+docker compose --project-name lifi_restore_job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
+  
+#docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLOAD -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-grdrive-sync:1.0.0
 
 echo "******************************************************************************************"
 echo "Step 2: Copying files from gdrive sync job container: gdrive-sync-job1"

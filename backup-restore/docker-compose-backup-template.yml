@@ -4,9 +4,11 @@ services:
   upload-site1:
     image: rakacha/lifi-grdrive-sync:1.0.0
     environment:
-      - SYNC_MODE=UPLOAD
+      - SYNC_MODE=${GDRIVE_SYNC_MODE}
       - BACKUP_DIR=/home/frappe/frappe-bench/sites/${BACKUP_SITE_NAME}/private/backups
       - GDRIVE_DIR=${BACKUP_GDRIVE_PATH}
+      - RESTORE_FILE_PREFIX=${GDRIVE_FILE_PREFIX}
+      - RESTORE_PATH=${RESTORE_GDRIVE_PATH}
     volumes:
       - "sites-vol:/home/frappe/frappe-bench/sites"
       - "app-vol:/app"
