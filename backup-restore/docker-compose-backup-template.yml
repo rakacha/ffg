@@ -4,7 +4,6 @@ services:
   sync-site:
     image: rakacha/lifi-grdrive-sync:1.0.0
     stdin_open: true # docker run -i
-    tty: true
     environment:
       - SYNC_MODE=${GDRIVE_SYNC_MODE}
       - BACKUP_DIR=/home/frappe/frappe-bench/sites/${BACKUP_SITE_NAME}/private/backups

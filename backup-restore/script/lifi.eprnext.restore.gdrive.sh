@@ -75,7 +75,7 @@ export WORKING_DIR=/home/azureuser/LIFI/devops
   
 envsubst '${GDRIVE_SYNC_MODE},${GDRIVE_FILE_PREFIX},${RESTORE_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
   
-docker compose --project-name gdrive-sync-job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
+docker compose --project-name gdrive-sync-job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml run sync-site
   
 #docker run -i -v gdrive-job-vol:/app --name gdrive-sync-job1 -e SYNC_MODE=DOWNLOAD -e RESTORE_FILE_PREFIX=$file_name_prefix -e RESTORE_PATH=$file_loc --network frappe_docker_default rakacha/lifi-grdrive-sync:1.0.0
 
