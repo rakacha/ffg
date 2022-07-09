@@ -48,7 +48,7 @@ for site_name in $site_arr
   
   envsubst '${GDRIVE_SYNC_MODE}, ${BACKUP_SITE_NAME},${BACKUP_GDRIVE_PATH}' < ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup-template.yml > ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml
   
-  docker compose --project-name lifi_backup_job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml run sync-site
+  docker compose --project-name lifi_backup_job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml up
   
   unset BACKUP_SITE_NAME
   unset BACKUP_GDRIVE_PATH
