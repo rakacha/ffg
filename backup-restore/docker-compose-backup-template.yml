@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   sync-site:
-    image: rakacha/lifi-grdrive-sync:4.0.0
+    image: rakacha/lifi-gdrive-sync:5.0.0
     environment:
       - SYNC_MODE=${GDRIVE_SYNC_MODE}
       - BACKUP_DIR=/home/frappe/frappe-bench/sites/${BACKUP_SITE_NAME}/private/backups

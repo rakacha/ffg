@@ -19,8 +19,8 @@ import shutil
 
 def restoreFiles(drive, folder_id, file_prefix):
 	site_config_backup = file_prefix + "-site_config_backup.json"
-	private_file_backup = file_prefix + "-private-files.tar"
-	public_file_backup = file_prefix + "-files.tar"
+	private_file_backup = file_prefix + "-private-files.tgz"
+	public_file_backup = file_prefix + "-files.tgz"
 	database_backup=file_prefix + "-database.sql.gz"
 	
 	shutil.rmtree('temp', ignore_errors=True)
