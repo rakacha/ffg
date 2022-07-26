@@ -26,5 +26,4 @@ volumes:
     external: true
     name: frappe_docker_sites
   app-vol:
-    external: true
     name: gdrive-job-vol
