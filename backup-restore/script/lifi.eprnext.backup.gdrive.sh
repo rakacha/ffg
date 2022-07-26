@@ -35,7 +35,7 @@ for site_name in $site_arr
   echo "******************************************************************************************"
   echo "Step 1: Running backup command for site: " $site_name
   echo "******************************************************************************************"
-  docker exec $project_name-backend-1 bench --site $site_name backup --with-files --compose
+  docker exec $project_name-backend-1 bench --site $site_name backup --with-files --compress
   
   echo "******************************************************************************************"
   echo "Step 2: Backup run successfully, now processing to upload in Google Drive"
