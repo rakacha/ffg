@@ -90,7 +90,7 @@ mkdir temp_drive_bcup
 echo "Copy the backups to host dir and remove the temp dir from the container"
 docker cp gdrive-sync-job-sync-site-1:/app/temp/. temp_drive_bcup
 
-docker compose -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml run sync-site rm -r /app/temp
+docker compose --project-name gdrive-sync-job -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml run sync-site rm -r /app/temp
 
 if [ -z "$(ls -A temp_drive_bcup)" ]
  then
