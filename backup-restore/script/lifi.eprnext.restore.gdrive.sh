@@ -83,10 +83,14 @@ echo "**************************************************************************
 echo "Step 2: Copying files from gdrive sync job container: gdrive-sync-job1"
 echo "******************************************************************************************"
 
+echo "Recreate the host dir to keep the backups"
 rm -r temp_drive_bcup
 mkdir temp_drive_bcup
 
+echo "Copy the backups to host dir and remove the temp dir from the container"
 docker cp gdrive-sync-job-sync-site-1:/app/temp/. temp_drive_bcup
+
+docker compose -f ${WORKING_DIR}/ffg/backup-restore/docker-compose-backup.yml run sync-site rm -r /app/temp
 
 if [ -z "$(ls -A temp_drive_bcup)" ]
  then
