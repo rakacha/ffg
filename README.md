@@ -29,7 +29,7 @@ It has 3 child directories
 ```bash
  docker compose --project-name lifi-erpnext-runner --env-file prod.env up -d
 ```
-4. Select the date time of the back up from Google Drive that you want to restore, for ex - "20220726_092703-lifi_erpnext". Also note the db password from the "***_site_config.json" file from Google Drive copy that you want to restore. Following which run the restore script -
+4. Select the date time of the back up from Google Drive (use LIFI Admin Account) that you want to restore, for ex - "20220726_092703-lifi_erpnext". Also note the db password from the "***_site_config.json" file from Google Drive copy that you want to restore. Following which run the restore script -
 
 ```bash
  sh lifi.eprnext.restore.gdrive.sh -s lifi.erpnext -p lifi-erpnext-runner -l lifi.erpnext.backup -f 20220726_092703-lifi_erpnext -r <mysql_root_password_selected_during_initial_app_setup>-d <password_of_app_schema_that_you_want_to_restore_found_in_the_backed_up_site_config_json>
