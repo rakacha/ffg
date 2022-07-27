@@ -1,6 +1,6 @@
 services:
   reverseproxy-uat:
-    image: rakacha/erpnext-rev-proxy:2.0.0
+    image: lifi/erpnext-rev-proxy:1.0.0
     environment:
      SITE_NAME: ${UAT_SITE_NAME}
      HOST_NAME: ${UAT_HOST_NAME}
@@ -9,7 +9,7 @@ services:
      - ${UAT_PORT}:${UAT_PORT}
     restart: always
   reverseproxy:
-    image: rakacha/erpnext-rev-proxy:2.0.0
+    image: lifi/erpnext-rev-proxy:1.0.0
     environment:
      SITE_NAME: ${PROD_SITE_NAME}
      HOST_NAME: ${PROD_HOST_NAME}
