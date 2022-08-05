@@ -21,7 +21,7 @@ It has 3 child directories
 1. Clone the repo
 2. Go inside the deployment dir:
   ``` bash 
- cd ffg/deployment 
+ cd ffg/deployment/lifi-erpnext
 ```
 
 3. run the following to spin up the erpnext instance
