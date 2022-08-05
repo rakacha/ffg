@@ -21,7 +21,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -49,7 +49,7 @@ services:
       REDIS_QUEUE: redis:6379/1
       REDIS_SOCKETIO: redis:6379/2
       SOCKETIO_PORT: "9000"
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -118,7 +118,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -135,7 +135,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -152,7 +152,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -176,7 +176,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: lifi/lifi-custom-auth:1.0.0
+    image: lifi/lifi-custom-erpnext:1.0.0
     networks:
       default: null
     volumes:
@@ -220,4 +220,4 @@ x-depends-on-configurator:
     configurator:
       condition: service_completed_successfully
 x-erpnext-backend-image:
-  image: lifi/lifi-custom-auth:1.0.0
+  image: lifi/lifi-custom-erpnext:1.0.0
