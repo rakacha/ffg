@@ -1,0 +1,223 @@
+services:
+  reverseproxy-uat:
+    image: lifi/erpnext-rev-proxy:1.0.0
+    environment:
+     SITE_NAME: ${UAT_SITE_NAME}
+     HOST_NAME: ${UAT_HOST_NAME}
+     LISTEN_PORT: ${UAT_PORT}
+    ports: 
+     - ${UAT_PORT}:${UAT_PORT}
+    restart: always
+  reverseproxy:
+    image: lifi/erpnext-rev-proxy:1.0.0
+    environment:
+     SITE_NAME: ${PROD_SITE_NAME}
+     HOST_NAME: ${PROD_HOST_NAME}
+     LISTEN_PORT: ${PROD_PORT}
+    ports:
+     - ${PROD_PORT}:${PROD_PORT}
+    restart: always
+  backend:
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+    - type: volume
+      source: assets
+      target: /home/frappe/frappe-bench/sites/assets
+      read_only: true
+      volume: {}
+  configurator:
+    command:
+    - configure.py
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      REDIS_CACHE: redis:6379/0
+      REDIS_QUEUE: redis:6379/1
+      REDIS_SOCKETIO: redis:6379/2
+      SOCKETIO_PORT: "9000"
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  db:
+    command:
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
+    - --skip-character-set-client-handshake
+    - --skip-innodb-read-only-compressed
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASS}"
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - mysqladmin ping -h localhost --password=${DB_ROOT_PASS}
+      interval: 1s
+      retries: 15
+    image: mariadb:10.6
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: db-data
+      target: /var/lib/mysql
+      volume: {}
+  frontend:
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      FRAPPE_SITE_NAME_HEADER: $$host
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: frappe/erpnext-nginx:v13.27.1
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: 8080
+      protocol: tcp
+    volumes:
+    - type: volume
+      source: assets
+      target: /usr/share/nginx/html/assets
+      volume: {}
+    - type: volume
+      source: sites
+      target: /usr/share/nginx/html/sites
+      volume: {}
+  queue-default:
+    command:
+    - bench
+    - worker
+    - --queue
+    - default
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  queue-long:
+    command:
+    - bench
+    - worker
+    - --queue
+    - long
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  queue-short:
+    command:
+    - bench
+    - worker
+    - --queue
+    - short
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: redis-data
+      target: /data
+      volume: {}
+  scheduler:
+    command:
+    - bench
+    - schedule
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/erpnext-worker:v13.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  websocket:
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: frappe/frappe-socketio:v13.27.0
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+networks:
+  default:
+    name: frappe_docker_default
+volumes:
+  assets:
+    name: frappe_docker_assets
+  db-data:
+    name: frappe_docker_db-data
+  redis-data:
+    name: frappe_docker_redis-data
+  sites:
+    name: frappe_docker_sites
+x-backend-defaults:
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
+  image: frappe/frappe-worker:v13.27.0
+  volumes:
+  - sites:/home/frappe/frappe-bench/sites
+x-depends-on-configurator:
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
+x-erpnext-backend-image:
+  image: frappe/erpnext-worker:v13.27.1
